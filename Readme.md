@@ -22,6 +22,28 @@ curl -fsSL https://raw.githubusercontent.com/adaptive-scale/webshell/master/inst
 2. **Make executable**: `chmod +x webshell_*`
 3. **Run**: `./webshell_*` (or `webshell.exe` on Windows)
 
+### Installation Steps
+
+The automatic installer will:
+
+1. **Detect your platform** (Linux, macOS, Windows)
+2. **Download the correct binary** for your architecture (AMD64/ARM64)
+3. **Install to system directory** (`/usr/local/bin`) or user directory (`~/.local/bin`)
+4. **Verify installation** and show usage information
+
+### After Installation
+
+```bash
+# Start WebShell (if installed to system PATH)
+webshell
+
+# Or run directly from user directory
+~/.local/bin/webshell
+
+# Custom port
+PORT=3000 webshell
+```
+
 ### Supported Platforms
 
 - **Linux AMD64**: `webshell_linux_amd64`
