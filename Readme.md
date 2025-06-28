@@ -4,6 +4,32 @@ A secure HTTP server that can execute CLI commands via REST API endpoints using 
 
 ![WebShell Interface](image.png)
 
+## Quick Install
+
+### Automatic Installation (Recommended)
+
+```bash
+# Install latest version
+curl -fsSL https://raw.githubusercontent.com/adaptive-scale/webshell/main/install.sh | bash
+
+# Install specific version
+curl -fsSL https://raw.githubusercontent.com/adaptive-scale/webshell/main/install.sh | bash -s v1.0.0
+```
+
+### Manual Installation
+
+1. **Download** the appropriate binary for your platform from [GitHub Releases](https://github.com/adaptive-scale/webshell/releases)
+2. **Make executable**: `chmod +x webshell_*`
+3. **Run**: `./webshell_*` (or `webshell.exe` on Windows)
+
+### Supported Platforms
+
+- **Linux AMD64**: `webshell_linux_amd64`
+- **Linux ARM64**: `webshell_linux_arm64` (Raspberry Pi, etc.)
+- **macOS AMD64**: `webshell_darwin_amd64` (Intel Macs)
+- **macOS ARM64**: `webshell_darwin_arm64` (Apple Silicon M1/M2)
+- **Windows AMD64**: `webshell.exe`
+
 ## Features
 
 - 🚀 **RESTful API** - Execute commands via HTTP POST requests with raw body
@@ -21,17 +47,17 @@ A secure HTTP server that can execute CLI commands via REST API endpoints using 
 ### 1. Run the Server
 
 ```bash
-cd webshell
-go run main.go
+# Using installed binary
+webshell
+
+# Using downloaded binary
+./webshell_linux_amd64
+
+# Custom port
+PORT=3000 webshell
 ```
 
-The server will start on port 8080 by default. You can change the port by setting the `PORT` environment variable:
-
-```bash
-go run main.go
-```
-
-To go `http://localhost:8080/terminal`
+The server will start on port 8080 by default. You can change the port by setting the `PORT` environment variable.
 
 ### 2. Access the Web Interface
 
