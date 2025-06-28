@@ -71,11 +71,11 @@ download_binary() {
     download_url="https://github.com/${REPO}/releases/download/v${VERSION}/${filename}"
     
     echo -e "${YELLOW}📥 Downloading WebShell v${VERSION} for ${platform}...${NC}"
-    echo -e "${YELLOW}URL: ${download_url}${NC}"
+    echo -e "${YELLOW}URL: ${download_url}${platform}"
     
     # Download the binary
     if curl -L -o "${filename}" "${download_url}"; then
-        echo -e "${GREEN}✅ Download successful${NC}"
+        echo -e "${GREEN}✅ Download successful for ${platform}"
     else
         echo -e "${RED}❌ Download failed${NC}"
         echo -e "${YELLOW}💡 Make sure the release exists at: https://github.com/${REPO}/releases/tag/v${VERSION}${NC}"
