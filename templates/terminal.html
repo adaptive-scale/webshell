@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SSH Fun - Web Terminal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            font-family: 'Courier New', monospace;
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            z-index: 1000;
+            border-bottom: 2px solid #333333;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .header h1 {
+            color: #333333;
+            margin: 0;
+            font-size: 18px;
+            display: inline-block;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
+        }
+        .header p {
+            color: #666666;
+            margin: 5px 0 0 0;
+            font-size: 12px;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .hostname {
+            color: #007bff;
+            font-weight: bold;
+            font-size: 14px;
+            margin-left: 20px;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .status {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            color: #00ff00;
+            font-size: 12px;
+            z-index: 1001;
+        }
+        .terminal-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 60px;
+            background-color: #000000;
+            padding: 10px;
+            margin: 0;
+        }
+        .controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            border-top: 2px solid #333333;
+            z-index: 1000;
+        }
+        .btn {
+            background-color: #333333;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            margin: 0 5px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .btn:hover {
+            background-color: #555555;
+        }
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .back-link {
+            position: fixed;
+            bottom: 10px;
+            right: 20px;
+            z-index: 1001;
+        }
+        .back-link a {
+            color: #00ff00;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        .xterm {
+            height: 100% !important;
+        }
+        .xterm-viewport {
+            background-color: #000000 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>SSH - Web Terminal</h1>
+        <span class="hostname">@{{.Hostname}}</span>
+        <span class="status-badge disconnected" id="statusBadge">Disconnected</span>
+        <p>WebShell</p>
+    </div>
+    
+    <div class="status" id="status">Connecting...</div>
+    
+    <div class="terminal-container" id="terminal"></div>
+    
+    <div class="controls">
+        <button class="btn" id="connectBtn" onclick="connect()" disabled>Connect</button>
+        <button class="btn" id="disconnectBtn" onclick="disconnect()" disabled>Disconnect</button>
+        <button class="btn" id="clearBtn" onclick="clearTerminal()">Clear</button>
+        <button class="btn" id="fullscreenBtn" onclick="toggleFullscreen()">Fullscreen</button>
+    </div>
+    
+    <div class="back-link">
+        <a href="/">← Back to Home</a>
+    </div>
+
+    <script>
+        // ... (JS code unchanged, copy from main.go)
+    </script>
+</body>
+</html> 
