@@ -71,7 +71,7 @@ download_binary() {
     download_url="https://github.com/${REPO}/releases/download/v${VERSION}/${filename}"
     
     echo -e "${YELLOW}📥 Downloading WebShell v${VERSION} for ${platform}...${NC}"
-    echo -e "${YELLOW}URL: ${download_url}${platform}"
+    echo -e "${YELLOW}URL: ${download_url}"
     
     # Download the binary
     if curl -L -o "${filename}" "${download_url}"; then
@@ -81,8 +81,9 @@ download_binary() {
         echo -e "${YELLOW}💡 Make sure the release exists at: https://github.com/${REPO}/releases/tag/v${VERSION}${NC}"
         exit 1
     fi
+
     
-    echo "${filename}"
+   echo "${filename}"
 }
 
 # Install binary
