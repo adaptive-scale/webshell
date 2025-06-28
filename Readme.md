@@ -28,7 +28,7 @@ go run main.go
 The server will start on port 8080 by default. You can change the port by setting the `PORT` environment variable:
 
 ```bash
-PORT=3000 go run main.go
+go run main.go
 ```
 
 To go `http://localhost:8080/terminal`
