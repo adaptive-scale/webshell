@@ -34,7 +34,7 @@ detect_platform() {
         CYGWIN*)    OS="windows";;
         MINGW*)     OS="windows";;
         MSYS*)      OS="windows";;
-        *)          echo -e "${RED}❌ Unsupported operating system${NC}"; exit 1;;
+        *)          echo -e "${RED}❌ Unsupported operating system${NC}" >&2; exit 1;;
     esac
     
     case "$(uname -m)" in
@@ -42,10 +42,10 @@ detect_platform() {
         amd64)      ARCH="amd64";;
         arm64)      ARCH="arm64";;
         aarch64)    ARCH="arm64";;
-        *)          echo -e "${RED}❌ Unsupported architecture: $(uname -m)${NC}"; exit 1;;
+        *)          echo -e "${RED}❌ Unsupported architecture: $(uname -m)${NC}" >&2; exit 1;;
     esac
     
-    echo -e "${GREEN}✅ Detected: ${OS} ${ARCH}${NC}"
+    echo -e "${GREEN}✅ Detected: ${OS} ${ARCH}${NC}" >&2
     echo "${OS}_${ARCH}"
 }
 
