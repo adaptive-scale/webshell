@@ -13,7 +13,7 @@ A secure HTTP server that can execute CLI commands via REST API endpoints using 
 curl -fsSL https://raw.githubusercontent.com/adaptive-scale/webshell/master/install.sh | bash
 
 # Install specific version
-curl -fsSL https://raw.githubusercontent.com/adaptive-scale/webshell/master/install.sh | bash -s v1.0.0
+curl -fsSL https://raw.githubusercontent.com/adaptive-scale/webshell/master/install.sh | bash -s v0.1.6
 ```
 
 ### Manual Installation
