@@ -31,6 +31,8 @@ The server will start on port 8080 by default. You can change the port by settin
 PORT=3000 go run main.go
 ```
 
+To go `http://localhost:8080/terminal`
+
 ### 2. Access the Web Interface
 
 Open your browser and navigate to `http://localhost:8080` to see the interactive web interface with usage examples and a test form.
