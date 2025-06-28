@@ -1,7 +1,7 @@
-# Makefile for Web HTTP Exec
+# Makefile for WebShell
 
 # Variables
-BINARY_NAME=webhttpexec
+BINARY_NAME=webshell
 BUILD_DIR=build
 MAIN_FILE=main.go
 PORT?=8080

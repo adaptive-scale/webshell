@@ -1,7 +1,8 @@
-
-## Web HTTP Exec
+## WebShell
 
 A secure HTTP server that can execute CLI commands via REST API endpoints using simple raw body requests. Returns command output as raw text by default, with JSON metadata available on request. Includes a full-featured web SSH terminal for interactive shell access.
+
+![WebShell Interface](image.png)
 
 ## Features
 
@@ -13,13 +14,14 @@ A secure HTTP server that can execute CLI commands via REST API endpoints using 
 - 📊 **Detailed Responses** - JSON metadata available with Accept header
 - 🏥 **Health Check** - Built-in health monitoring endpoint
 - 🎨 **Beautiful UI** - Interactive web interface for testing
+- 🛠️ **Makefile Support** - Comprehensive build and development tools
 
 ## Quick Start
 
 ### 1. Run the Server
 
 ```bash
-cd sshttp
+cd webshell
 go run main.go
 ```
 
@@ -56,6 +58,134 @@ curl -X POST http://localhost:8080/execute -d "find . -name '*.go'"
 curl -X POST http://localhost:8080/execute \
   -H "Accept: application/json" \
   -d "uname -a"
+```
+
+## Using Makefile
+
+The project includes a comprehensive Makefile for easy development and deployment. Run `make help` to see all available commands.
+
+### Quick Makefile Commands
+
+```bash
+# Show all available commands
+make help
+
+# Run the application
+make run
+
+# Build the application
+make build
+
+# Run with hot reload (development)
+make dev
+
+# Run tests
+make test
+
+# Format and vet code
+make check
+```
+
+### Build Commands
+
+```bash
+# Build for current platform
+make build
+
+# Build for specific platforms
+make build-linux    # Linux binary
+make build-darwin   # macOS binary
+make build-windows  # Windows binary
+
+# Build for all platforms
+make build-all
+
+# Build and run
+make run-build
+```
+
+### Development Commands
+
+```bash
+# Run with hot reload (requires air)
+make dev
+
+# Install development tools
+make setup
+
+# Run code quality checks
+make fmt           # Format code
+make vet           # Vet code
+make lint          # Run linter
+make check         # Format, vet, and test
+make pre-commit    # All pre-commit checks
+
+# Run tests
+make test              # Run tests
+make test-coverage     # Run tests with coverage
+make test-bench        # Run benchmark tests
+```
+
+### Dependency Management
+
+```bash
+# Download dependencies
+make deps
+
+# Update dependencies
+make deps-update
+
+# Clean module cache
+make deps-clean
+```
+
+### Docker Commands
+
+```bash
+# Build Docker image
+make docker-build
+
+# Run Docker container
+make docker-run
+
+# Clean Docker images
+make docker-clean
+```
+
+### Release Commands
+
+```bash
+# Build release binaries for all platforms
+make release
+
+# Build release binary for Linux only
+make release-linux
+
+# Install to GOPATH/bin
+make install
+```
+
+### Clean Commands
+
+```bash
+# Clean build artifacts
+make clean
+
+# Clean everything including dependencies
+make clean-all
+```
+
+### Custom Port Usage
+
+```bash
+# Run on custom port
+PORT=3000 make run
+
+# Build and run on custom port
+PORT=3000 make run-build
+
+# Docker run on custom port
+PORT=3000 make docker-run
 ```
 
 ## API Endpoints

@@ -116,6 +116,25 @@
         .xterm-viewport {
             background-color: #000000 !important;
         }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status-badge.connected {
+            background-color: #28a745;
+            color: white;
+        }
+        .status-badge.disconnected {
+            background-color: #dc3545;
+            color: white;
+        }
+        .status-badge.connecting {
+            background-color: #ffc107;
+            color: black;
+        }
     </style>
 </head>
 <body>
@@ -126,12 +145,12 @@
         <p>WebShell</p>
     </div>
     
-    <div class="status" id="status">Connecting...</div>
+    <div class="status" id="status">Ready to connect</div>
     
     <div class="terminal-container" id="terminal"></div>
     
     <div class="controls">
-        <button class="btn" id="connectBtn" onclick="connect()" disabled>Connect</button>
+        <button class="btn" id="connectBtn" onclick="connect()">Connect</button>
         <button class="btn" id="disconnectBtn" onclick="disconnect()" disabled>Disconnect</button>
         <button class="btn" id="clearBtn" onclick="clearTerminal()">Clear</button>
         <button class="btn" id="fullscreenBtn" onclick="toggleFullscreen()">Fullscreen</button>
@@ -142,7 +161,172 @@
     </div>
 
     <script>
-        // ... (JS code unchanged, copy from main.go)
+        let term;
+        let socket;
+        let fitAddon;
+        let isConnected = false;
+
+        // Initialize terminal
+        function initTerminal() {
+            term = new Terminal({
+                cursorBlink: true,
+                fontSize: 14,
+                fontFamily: 'Courier New, monospace',
+                theme: {
+                    background: '#000000',
+                    foreground: '#ffffff',
+                    cursor: '#ffffff',
+                    selection: '#ffffff',
+                    black: '#000000',
+                    red: '#ff0000',
+                    green: '#00ff00',
+                    yellow: '#ffff00',
+                    blue: '#0000ff',
+                    magenta: '#ff00ff',
+                    cyan: '#00ffff',
+                    white: '#ffffff',
+                    brightBlack: '#666666',
+                    brightRed: '#ff6666',
+                    brightGreen: '#66ff66',
+                    brightYellow: '#ffff66',
+                    brightBlue: '#6666ff',
+                    brightMagenta: '#ff66ff',
+                    brightCyan: '#66ffff',
+                    brightWhite: '#ffffff'
+                }
+            });
+
+            fitAddon = new FitAddon.FitAddon();
+            term.loadAddon(fitAddon);
+            term.open(document.getElementById('terminal'));
+            fitAddon.fit();
+
+            // Handle terminal input
+            term.onData(data => {
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    socket.send(data);
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if (fitAddon) {
+                    fitAddon.fit();
+                    if (socket && socket.readyState === WebSocket.OPEN) {
+                        const dims = fitAddon.proposeDimensions();
+                        if (dims) {
+                            socket.send(JSON.stringify({
+                                type: 'resize',
+                                cols: dims.cols,
+                                rows: dims.rows
+                            }));
+                        }
+                    }
+                }
+            });
+
+            // Auto-connect after terminal initialization
+            setTimeout(() => {
+                connect();
+            }, 100);
+        }
+
+        // Connect to WebSocket
+        function connect() {
+            if (isConnected) return;
+
+            updateStatus('Connecting...', 'connecting');
+            updateButtons(true, false);
+
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws`;
+            
+            socket = new WebSocket(wsUrl);
+
+            socket.onopen = function(event) {
+                isConnected = true;
+                updateStatus('Connected', 'connected');
+                updateButtons(false, true);
+                term.write('\r\nConnected to WebShell\r\n');
+                
+                // Send initial resize
+                const dims = fitAddon.proposeDimensions();
+                if (dims) {
+                    socket.send(JSON.stringify({
+                        type: 'resize',
+                        cols: dims.cols,
+                        rows: dims.rows
+                    }));
+                }
+            };
+
+            socket.onmessage = function(event) {
+                term.write(event.data);
+            };
+
+            socket.onclose = function(event) {
+                isConnected = false;
+                updateStatus('Disconnected', 'disconnected');
+                updateButtons(false, false);
+                term.write('\r\nDisconnected from WebShell\r\n');
+                
+                // Auto-reconnect after 2 seconds
+                setTimeout(() => {
+                    if (!isConnected) {
+                        term.write('\r\nReconnecting...\r\n');
+                        connect();
+                    }
+                }, 2000);
+            };
+
+            socket.onerror = function(error) {
+                isConnected = false;
+                updateStatus('Connection Error', 'disconnected');
+                updateButtons(false, false);
+                term.write('\r\nConnection error\r\n');
+                console.error('WebSocket error:', error);
+            };
+        }
+
+        // Disconnect from WebSocket
+        function disconnect() {
+            if (socket) {
+                socket.close();
+            }
+        }
+
+        // Clear terminal
+        function clearTerminal() {
+            term.clear();
+        }
+
+        // Toggle fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Update status display
+        function updateStatus(message, badgeClass) {
+            document.getElementById('status').textContent = message;
+            const badge = document.getElementById('statusBadge');
+            badge.textContent = message;
+            badge.className = `status-badge ${badgeClass}`;
+        }
+
+        // Update button states
+        function updateButtons(connecting, connected) {
+            document.getElementById('connectBtn').disabled = connecting || connected;
+            document.getElementById('disconnectBtn').disabled = !connected;
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', function() {
+            initTerminal();
+        });
     </script>
 </body>
 </html> 
