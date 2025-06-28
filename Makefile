@@ -38,12 +38,22 @@ build: ## Build the application
 .PHONY: build-linux
 build-linux: ## Build the application for Linux
 	@echo "Building $(BINARY_NAME) for Linux..."
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o $(BUILD_DIR)/$(BINARY_UNIX) $(MAIN_FILE)
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME)_linux_amd64 $(MAIN_FILE)
+
+.PHONY: build-linux-arm64
+build-linux-arm64: ## Build the application for Linux ARM64
+	@echo "Building $(BINARY_NAME) for Linux ARM64..."
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 $(GOBUILD) $(LDFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME)_linux_arm64 $(MAIN_FILE)
 
 .PHONY: build-darwin
 build-darwin: ## Build the application for macOS
 	@echo "Building $(BINARY_NAME) for macOS..."
-	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME)_darwin $(MAIN_FILE)
+	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME)_darwin_amd64 $(MAIN_FILE)
+
+.PHONY: build-darwin-arm64
+build-darwin-arm64: ## Build the application for macOS ARM64
+	@echo "Building $(BINARY_NAME) for macOS ARM64..."
+	CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 $(GOBUILD) $(LDFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME)_darwin_arm64 $(MAIN_FILE)
 
 .PHONY: build-windows
 build-windows: ## Build the application for Windows
@@ -51,7 +61,7 @@ build-windows: ## Build the application for Windows
 	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME).exe $(MAIN_FILE)
 
 .PHONY: build-all
-build-all: build build-linux build-darwin build-windows ## Build for all platforms
+build-all: build-linux build-linux-arm64 build-darwin build-darwin-arm64 build-windows ## Build for all platforms
 
 # Run targets
 .PHONY: run
@@ -200,5 +210,7 @@ $(BUILD_DIR):
 # Ensure build directory exists for build targets
 build: $(BUILD_DIR)
 build-linux: $(BUILD_DIR)
+build-linux-arm64: $(BUILD_DIR)
 build-darwin: $(BUILD_DIR)
+build-darwin-arm64: $(BUILD_DIR)
 build-windows: $(BUILD_DIR) 
